@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       RegistraTr
- * Description:       Plugin de registro de usuario por clave de invitación
+ * Description:       Plugin de registro de usuario por clave de invitación. [registratr_register] para mostrar menú de registro con introducción de código de invitación. Ver opciones en el panel de RegistraTr
  * Version:           1.10.3
  * Requires at least: 5.2
  * Requires PHP:      7.2
@@ -12,16 +12,28 @@
  */
 defined( 'ABSPATH') or die('Hey no tienes acceso a esto');
 
-//definiendo ruta del plugin//
+/**
+ * definiendo rutas // setting paths
+ */
 define('EXTRACTR_PATH',__FILE__);
 define ('EXTRACTR_PLUGIN_PATH',plugin_dir_path( 'EXTRACTR_PATH' ));
 define ('EXTRACTR_PLUGIN_URL',plugin_dir_url( 'EXTRACTR_PATH' ));
 define ('EXTRACTR_PLUGIN_NAME','ExtracTr');
+/**
+ * definiendo idioma / setting lang // VERSION DE VENTA
+ */
 
+
+/**
+ * definiendo dependencias // setting dependencies
+ */
 include("filters.php");
 include("functions.php");
 include("frontend.php");
 include("frontendadmin.php");
+
+
+
 
 class RegistraTrPlugin{
     function activated(){
@@ -96,18 +108,5 @@ function registratr_code_exists($code){
 }
 
 
-function theme_add_user_code_column( $columns ) {
-      $columns['_codigo_para_invitar'] = __( 'codigo de invitacion', 'theme' );
-      return $columns;
-    } // end theme_add_user_code_column
-    add_filter( 'manage_users_columns', 'theme_add_user_code_column' );
 
-function theme_show_user_code_data( $value, $column_name, $user_id ) {
-
-    if( '_codigo_para_invitar' == $column_name ) {
-        return get_user_meta( $user_id, '_codigo_para_invitar', true );
-    } // end if
-    
-    } // end theme_show_user_code_data
-    add_action( 'manage_users_custom_column', 'theme_show_user_code_data', 10, 3 );
 ?>
