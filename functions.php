@@ -166,4 +166,11 @@ function auto_redirect_after_logout(){
   wp_redirect( home_url() );
   exit();
 }
+add_action('admin_init', 'disable_dashboard');
+function disable_dashboard() {
+    if (current_user_can('subscriber') && is_admin()) {
+        wp_redirect(home_url()));
+        exit;
+    }
+}
 ?>
