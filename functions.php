@@ -132,7 +132,9 @@ function registratr_check_and_logout_user(){
     $key = '_activado';
     $usermeta = get_user_meta($userid, $key, true);
     if($usermeta != '1'&& $userid!=null){
-        
+        $redirect_url = get_option('_rttr_pagina_de_no_confirmado');
+        wp_safe_redirect( $redirect_url );
+        //exit;
         wp_logout();
     }
 }
@@ -145,5 +147,5 @@ function registratr_redirect_on_logout(){
     
     //header("Location: http://localhost/wordpress/index.php/espere/");
 }
-add_action('wp_logout', 'registratr_redirect_on_logout', 10);
+//add_action('wp_logout', 'registratr_redirect_on_logout', 10);
 ?>
