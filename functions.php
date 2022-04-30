@@ -28,20 +28,17 @@ function registratr_add_codes() {
         $user_update = update_user_meta($user->ID, $key, registratr_code_generate());
         }
     }
-    echo('user');
+
 }
 function registratr_add_activation_id() {
     $key = '_id_activacion';$key2 = '_activado';
     $users = get_users( ['fields' => ['ID'] ] );
     foreach ( $users as $user ) {
-        if(!get_user_meta($user->ID, $key, true)){
         $user_update = update_user_meta($user->ID, $key, registratr_code_generate());
-        }
-        if(get_user_meta($user->ID, $key2)){
-            $user_update = update_user_meta($user->ID, $key2, '1');
-            }
+        $user_update = update_user_meta($user->ID, $key2, '1');
+
     }
-    echo('user');
+
 }
 function registratr_add_invited_by_id($user, $code) {
     $key='_invitado_por_id';
@@ -148,5 +145,32 @@ function registratr_redirect_on_logout(){
     
     //header("Location: http://localhost/wordpress/index.php/espere/");
 }
-//add_action('wp_logout', 'registratr_redirect_on_logout', 10);
+/*function registratr_redirect_on_login(){
+    $admin = current_user_can( 'manage_options' );
+    if($admin)
+    return;
+    $redirect_url = get_option('_rttr_pagina_de_redireccion_en_login');
+    return $redirect_url; 
+}
+add_action('login_redirect', 'registratr_redirect_on_login', 10);
+add_action('logout_redirect', 'registratr_redirect_on_login', 10);*/
+function my_login_redirect( $redirect_to ) {
+    $redirect_to =  home_url();
+ 
+    return $redirect_to;
+}
+ 
+add_filter( 'login_redirect', 'my_login_redirect', 10);
+add_action('wp_logout','auto_redirect_after_logout');
+function auto_redirect_after_logout(){
+  wp_redirect( home_url() );
+  exit();
+}
+add_action('admin_init', 'disable_dashboard');
+function disable_dashboard() {
+    if (current_user_can('subscriber') && is_admin()) {
+        wp_redirect(home_url());
+        exit;
+    }
+}
 ?>

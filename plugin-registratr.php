@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       RegistraTr
  * Description:       Plugin de registro de usuario por clave de invitación. [registratr_register] para mostrar menú de registro con introducción de código de invitación. [registratr_lock] Para bloquear contenido. [registratr_show_code]Para mostrar el codigo de invitacion al usuario actual. [registratr_users] Para mostrar lista de usuarios pendientes. Ver opciones en el panel de RegistraTr
- * Version:           1.10.3
+ * Version:           1.11.0
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Pablo Reyes (Jirohn)
@@ -45,14 +45,14 @@ class RegistraTrPlugin{
 
     }
     function deactivated(){
-        echo'plugin was deactivated';
+        
 
 
     }
     function uninstall(){
         $users = get_users( ['fields' => ['ID'] ] );
         foreach ( $users as $user ) {
-            $user_update = delete_user_meta($user->ID, $key, registratr_code_generate());
+            $user_update = delete_user_meta($user->ID, $key);
         }
 
     }
@@ -92,8 +92,6 @@ function new_user_meta( $meta, $user, $update )
     $meta['_codigo_para_invitar'] = registratr_code_generate();
     $meta['_id_activacion'] = registratr_code_generate();
     $meta['_activado'] = '0';
-
-
     return $meta;
 }
 
