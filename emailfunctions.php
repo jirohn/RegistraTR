@@ -2,7 +2,8 @@
 
 
 function send_welcome_email_to_new_user($user_id) {
- 
+  $firstkey = '_rttr_correo_noresponder';
+  $correotosend = get_option($firstkey);
     $key = '_rttr_correo_para_invitados';
     $user = get_userdata($user_id);
     $user_email = $user->user_email;
@@ -38,7 +39,7 @@ function send_welcome_email_to_new_user($user_id) {
               <p>Kind Regards,</p>
               <p>poanchen</p>
     ';
-    $from = 'canariasraptv@gmail.com';
+    $from = $correotosend;
     $headers = "MIME-Version: 1.0" . "\r\n";
     $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
     $headers .= "From:" . $from;
@@ -58,6 +59,8 @@ function send_welcome_email_to_new_user($user_id) {
 
 
 function send_confirmation_email_to_old_user($user_id, $user2_id) {
+  $firstkey = '_rttr_correo_noresponder';
+$correotosend = get_option($firstkey);
   $key = '_rttr_correo_para_anfitriones';
   $key2 = '_rttr_pagina_de_lista_de_pendientes';
   $amigo = get_userdata($user2_id);
@@ -91,7 +94,7 @@ function send_confirmation_email_to_old_user($user_id, $user2_id) {
   
   $message = str_replace(array(chr(3)), '', $message);
   
-  $from = 'canariasraptv@gmail.com';
+  $from = $correotosend;
   $headers = "MIME-Version: 1.0" . "\r\n";
   $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
   $headers .= "From:" . $from;
@@ -109,7 +112,8 @@ function send_confirmation_email_to_old_user($user_id, $user2_id) {
 
 //NO SE AÑADE ACCION YA QUE SE LLAMA EN LA FUNCION DE REGISTRO INCLUYE DATOS
 function send_acepted_email_to_new_user($user_id) {
- 
+  $firstkey = '_rttr_correo_noresponder';
+  $correotosend = get_option($firstkey);
   $key = '_rttr_correo_para_aceptados';
 
   $user = get_userdata($user_id);
@@ -145,7 +149,7 @@ function send_acepted_email_to_new_user($user_id) {
             <p>Kind Regards,</p>
             <p>poanchen</p>
   ';
-  $from = 'canariasraptv@gmail.com';
+  $from = $correotosend;
   $headers = "MIME-Version: 1.0" . "\r\n";
   $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
   $headers .= "From:" . $from;

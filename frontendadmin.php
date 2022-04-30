@@ -20,12 +20,14 @@ function registratr_config_page($page){
   $key3 = '_rttr_pagina_de_lista_de_pendientes';
   $key4 = '_rttr_pagina_de_no_confirmado';
   $key5 = '_rttr_pagina_de_redirecion_en_login';
+  $key6 = '_rttr_correo_noresponder';
   $emailtxt1 = get_option($key2);
   $emailtxt3 = get_option($key1);  
   $emailtxt2 = get_option($key); 
   $page1val = get_option($key3);
   $page2val = get_option($key4);
   $page3val = get_option($key5);
+  $correo = get_option($key6);
     ?>
     <script src="https://unpkg.com/boxicons@2.1.2/dist/boxicons.js"></script>
 
@@ -105,6 +107,11 @@ function registratr_config_page($page){
         <td><input type="text" name="page3"  class="regular-text" value="<?php echo $page3val ?>">
          </td>       
         </tr>
+        <tr>
+        <th scope="row"><label for="correo">direccion Correo para envio de emails</label></th>
+        <td><input type="text" name="correo"  class="regular-text" value="<?php echo $correo ?>">
+         </td>       
+        </tr>
         
     </tbody>
     </table>
@@ -115,7 +122,7 @@ function registratr_config_page($page){
 <?php
 }
 
-function save_options_from_setup($opt2, $opt, $opt3, $pg1, $pg2, $pg3 ){
+function save_options_from_setup($opt2, $opt, $opt3, $pg1, $pg2, $pg3, $correo ){
 
   $key = '_rttr_correo_para_invitados';
   $key1 = '_rttr_correo_para_confirmados';
@@ -123,6 +130,7 @@ function save_options_from_setup($opt2, $opt, $opt3, $pg1, $pg2, $pg3 ){
   $key3 = '_rttr_pagina_de_lista_de_pendientes';
   $key4 = '_rttr_pagina_de_no_confirmado';
   $key5 = '_rttr_pagina_de_redirecion_en_login';
+  $key6 = '_rttr_correo_noresponder';
 
   if(get_option($key)){
     $user_update = update_option($key, $opt);
@@ -142,20 +150,23 @@ function save_options_from_setup($opt2, $opt, $opt3, $pg1, $pg2, $pg3 ){
   if(get_option($key5)){
   $user_update = update_option($key5, $pg3);
   }
+  if(get_option($key5)){
+    $user_update = update_option($key6, $correo);
+    }
 
 }
 function registratr_config_form() {
   if ( isset($_POST['submit'] ) ) {
    
       // sanitize user form input
-      global $mail1, $mail2, $mail3, $page1, $page2, $page3;
+      global $mail1, $mail2, $mail3, $page1, $page2, $page3 ,$correo;
       $mail1   =   sanitize_text_field($_POST['email1']);
       $mail2   =   sanitize_text_field($_POST['email2']);
       $mail3   =   sanitize_text_field($_POST['email3']);
       $page1  =   sanitize_text_field($_POST['page1']);
       $page2   =   sanitize_text_field($_POST['page2']);
       $page3   =   sanitize_text_field($_POST['page3']);
-
+      $correo = sanitize_email($_POST['correo']);
 
  
       save_options_from_setup(
@@ -164,7 +175,8 @@ function registratr_config_form() {
         $mail3,
         $page1,
         $page2,
-        $page3
+        $page3,
+        $correo
       );
   }
   registratr_config_page('');
