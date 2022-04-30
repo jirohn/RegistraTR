@@ -4,8 +4,8 @@ function registration_form( $username, $password, $email, $code ) {
 
     ?>
     
-<div id="login"
-    <form name="registerform" id="registerform" action="<?php $_SERVER['REQUEST_URI'] ?>" method="post">
+<div id="login">
+    <form action="<?php $_SERVER['REQUEST_URI'] ?>" method="post">
     <p>
         <label for="username">Nombre de usuario <strong>*</strong></label><br>
         <input class="input" value size="20" autocapitalize="off" type="text" name="username" value="<?php ( isset( $_POST['username'] ) ? $username : null ) ?>">
@@ -23,8 +23,8 @@ function registration_form( $username, $password, $email, $code ) {
      
     <p>
     <label for="code">Código de invitación</label></br>
-    <input class="input" value size="10" autocapitalize="off" type="text" name="code"  value="">
-    <input  type="submit" name="wp-submit" id="wp-submit" class="button button-primary button-large" value="Registro"/>
+    <input class="input" value size="10" autocapitalize="off" type="text" name="code"  value="<?php ( isset( $_POST['code']) ? $code : null ) ?>">
+    <input  type="submit" name="submit" id="submit" class="button button-primary button-large" value="Register"/>
     </p>
 
 
@@ -35,7 +35,12 @@ function registration_form( $username, $password, $email, $code ) {
 
 
     <?php
+    
 }
+
+
+
+
 function registration_validation( $username, $password, $email, $code )  {
     global $reg_errors;
     $reg_errors = new WP_Error;
@@ -85,9 +90,10 @@ function complete_registration() {
         'user_email'    =>   $email,
         'user_pass'     =>   $password,
         'codetoregister'      =>   $code,
-
         );
         $user = wp_insert_user( $userdata );
+        registratr_add_invited_by_id($user, $code);
+        send_confirmation_email_to_old_user(getinvitationid('_codigo_para_invitar',$code), $user);
         echo 'Registration complete. Goto <a href="' . get_site_url() . '/wp-login.php">login page</a>.';   
     }
 }
@@ -105,8 +111,7 @@ function custom_registration_function() {
         $username   =   sanitize_user( $_POST['username'] );
         $password   =   esc_attr( $_POST['password'] );
         $email      =   sanitize_email( $_POST['email'] );
-        //$code    =   esc_url( $_POST['code'] );
-
+        $code    =   esc_attr( $_POST['code'] );
     
         // call @function complete_registration to create the user
         // only when no WP_error is found
@@ -119,20 +124,112 @@ function custom_registration_function() {
     }
     
     registration_form(
-        $username,
-        $password,
-        $email,
-        $code
+        '','','',''
         );
 }
 
 // Register a new shortcode: [registratr_register]
 add_shortcode( 'registratr_register', 'custom_registration_shortcode' );
  
-// The callback function that will replace [book]
+
 function custom_registration_shortcode() {
     ob_start();
     custom_registration_function();
     return ob_get_clean();
 }
+
+function registratr_invited_list($code){
+    $key = '_invitado_por_ID';
+    $user = get_current_user_id();
+    $invitedusers = get_users(array(
+		'meta_key' => $key, 
+		'meta_value' => $user, 
+	));
+
+    foreach($invitedusers as $iuser){
+        $active = get_user_meta($iuser->ID,'_activado',true);
+        $thereis=false;
+        if($active =='0' && $active!=null){
+            $key = '_id_activacion';
+            $code = get_user_meta($iuser->ID, $key, true);
+            ?>
+            <div id="textwidget ">
+                <table>
+                    <thead>
+                        <tr>
+
+                            <td><?php echo $iuser->nickname?></td>
+                            <td>
+                            <form action="<?php $_SERVER['REQUEST_URI'] ;?>" method="post">
+                            <input class="input" name="code"  value="<?php echo $code;?>" style="display:none"/>
+                            <input  type="submit" name="submit" id="submit" class="button button-primary button-large" value="Confirmar Usuario"/>
+                            </form>  
+                            </td>
+                        </tr>
+                    </thead>
+                </table>
+
+            </div>
+            <?php
+                $thereis=true;
+        }        
+    }
+    if($thereis==false){
+        ?>
+        <div id="user_list">
+            Sin usuarios pendientes de registro
+        </div>
+        <?php
+    }
+
+}
+
+add_shortcode( 'registratr_users', 'custom_user_list_shortcode' );
+function registratr_activation_function(){
+    if ( isset($_POST['submit'] ) ) {
+        registratr_invited_list(
+        $_POST['code'],
+        );
+        // sanitize user form input
+        global $code;
+
+        $code    =   esc_attr( $_POST['code'] );
+    
+        // call @function complete_registration to create the user
+        activate_user($code);
+        // only when no WP_error is found
+
+    }
+    registratr_invited_list('');
+
+    
+}
+function activate_user($code){
+    $user = getactivationid('_id_activacion', $code);
+    $user_update = update_user_meta($user, '_activado', '1');
+    send_acepted_email_to_new_user($user);
+    header("Location: http://localhost/wordpress/index.php/tus-usuarios-pendientes-2/");
+}
+
+function custom_user_list_shortcode() {
+    ob_start();
+    registratr_activation_function();
+    return ob_get_clean();
+}
+function getactivationid( $meta_key, $meta_value ) {
+
+	// Query for users based on the meta data
+	$user_query = new WP_User_Query(
+		array(
+			'meta_key'	  =>	$meta_key,
+			'meta_value'	=>	$meta_value
+		)
+	);
+
+	// Get the results from the query, returning the first user
+	$users = $user_query->get_results();
+
+	return $users[0]->ID;
+
+} // end get_user_by_meta_data
 ?>

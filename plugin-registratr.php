@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       RegistraTr
- * Description:       Plugin de registro de usuario por clave de invitación. [registratr_register] para mostrar menú de registro con introducción de código de invitación. Ver opciones en el panel de RegistraTr
+ * Description:       Plugin de registro de usuario por clave de invitación. [registratr_register] para mostrar menú de registro con introducción de código de invitación. [registratr_lock] Para bloquear contenido. [registratr_show_code]Para mostrar el codigo de invitacion al usuario actual. [registratr_users] Para mostrar lista de usuarios pendientes. Ver opciones en el panel de RegistraTr
  * Version:           1.10.3
  * Requires at least: 5.2
  * Requires PHP:      7.2
@@ -29,6 +29,7 @@ define ('EXTRACTR_PLUGIN_NAME','ExtracTr');
  */
 include("filters.php");
 include("functions.php");
+include("emailfunctions.php");
 include("frontend.php");
 include("frontendadmin.php");
 
@@ -38,6 +39,8 @@ include("frontendadmin.php");
 class RegistraTrPlugin{
     function activated(){
         registratr_add_codes();
+        registratr_add_activation_id();
+        registratr_add_config_meta();
         echo'plugin was activated';
 
     }
@@ -60,11 +63,8 @@ if(class_exists('RegistraTrPlugin')){
     $registratrPlugin = new RegistraTrPlugin();
 }
 
-
-
- 
 function registratr_menu(){
-    add_menu_page( 'Registratr config', 'RegistraTr', 'manage_options', 'registratr-plugin', 'registratr_config_page' );
+    add_menu_page( 'Registratr config', 'RegistraTr', 'manage_options', 'registratr-plugin', 'registratr_config_form' );
 }
 add_action('admin_menu', 'registratr_menu');
 
@@ -89,11 +89,42 @@ function new_user_meta( $meta, $user, $update )
 {
     if ( $update )
         return $meta;
-
     $meta['_codigo_para_invitar'] = registratr_code_generate();
+    $meta['_id_activacion'] = registratr_code_generate();
+    $meta['_activado'] = '0';
+
+
     return $meta;
 }
 
+/*function getinvitationidbak($code){
+    $meta_key='_codigo_para_invitar';
+    $user = reset(
+        get_users(
+         array(
+          'meta_key' => $meta_key,
+          'meta_value' => $code          
+         )
+        )
+       );
+    return $user;
+}*/
+function getinvitationid( $meta_key, $meta_value ) {
+
+	// Query for users based on the meta data
+	$user_query = new WP_User_Query(
+		array(
+			'meta_key'	  =>	$meta_key,
+			'meta_value'	=>	$meta_value
+		)
+	);
+
+	// Get the results from the query, returning the first user
+	$users = $user_query->get_results();
+
+	return $users[0]->ID;
+
+} // end get_user_by_meta_data
 
 function registratr_code_exists($code){
     $users = get_users(array(

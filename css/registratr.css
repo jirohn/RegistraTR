@@ -1,0 +1,10 @@
+  
+  #infotext {
+    display: none;
+  }
+  
+  .info:hover + #infoText {
+    display: block;
+  }
+  
+  
