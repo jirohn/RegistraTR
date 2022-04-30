@@ -137,7 +137,7 @@ function registratr_check_and_logout_user(){
         wp_logout();
     }
 }
-add_action('init', 'registratr_check_and_logout_user');
+add_action('wp_login', 'registratr_check_and_logout_user');
 
 function registratr_redirect_on_logout(){
         $redirect_url = 'http://localhost/wordpress/index.php/espere/';
