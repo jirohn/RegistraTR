@@ -127,8 +127,8 @@ function registratr_redirect_if_not_registered(){
         }
     }
 }
-function registratr_check_and_logout_user($user_login){
-    $userid = $user_login;
+function registratr_check_and_logout_user(){
+    $userid = get_current_user_id();
     $key = '_activado';
     $usermeta = get_user_meta($userid, $key, true);
     if($usermeta != '1'&& $userid!=null){
