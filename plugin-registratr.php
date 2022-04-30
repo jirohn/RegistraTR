@@ -7,7 +7,7 @@
  * Requires PHP:      7.2
  * Author:            Pablo Reyes (Jirohn)
  * Author URI:        mailto:canariasraptv@gmail.com
- * Update URI:        https://github.com/jirohn/RegistraTR/archive/refs/heads/main.zip
+ * Update URI:        https://github.com/jirohn/RegistraTR.git
  * License:           GPL v2 or later
  */
 defined( 'ABSPATH') or die('Hey no tienes acceso a esto');
