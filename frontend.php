@@ -1,5 +1,5 @@
 <?php
-
+//version final
 function registration_form( $username, $password, $email, $code ) {
 
     ?>

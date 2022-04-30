@@ -1,5 +1,5 @@
 <?php
-
+//version final
 
 function send_welcome_email_to_new_user($user_id) {
   $firstkey = '_rttr_correo_noresponder';

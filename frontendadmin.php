@@ -1,4 +1,5 @@
 <?php
+//version final
 function theme_add_user_code_column( $columns ) {
     $columns['_codigo_para_invitar'] = __( 'Código de invitación', 'theme' );
     return $columns;

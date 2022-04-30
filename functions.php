@@ -1,5 +1,5 @@
 <?php
-
+//version final
 /**
 *Genera el codigo de registro devuelve un valor string // Generate code, returning  string value
 */
