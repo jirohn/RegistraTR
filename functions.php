@@ -120,31 +120,31 @@ function registratr_redirect_if_not_registered(){
     $key = '_activado';
     $usermeta = get_user_meta($userid, $key, true);
     if($userid == null){
-        header("Location: http://localhost/wordpress/index.php/registrese-para-ver-este-contenido/");
+        header("Location: ". get_site_url());
     }else{
         if($usermeta!='1'){
-            header("Location: http://localhost/wordpress/index.php/espere/");        
+            header("Location: ". get_option('_rttr_pagina_de_no_confirmado'));        
         }
     }
 }
-function registratr_check_and_logout_user(){
-    $userid = get_current_user_id();
+function registratr_check_and_logout_user($user_login){
+    $userid = $user_login;
     $key = '_activado';
     $usermeta = get_user_meta($userid, $key, true);
     if($usermeta != '1'&& $userid!=null){
         
-        header("Location: http://localhost/wordpress/index.php/espere/");
+        header("Location: ". get_option('_rttr_pagina_de_no_confirmado'));
         wp_logout();
     }
 }
-add_action('wp_login', 'registratr_check_and_logout_user');
+add_action('wp_login', 'registratr_check_and_logout_user', 10);
 
 function registratr_redirect_on_logout(){
-        $redirect_url = 'http://localhost/wordpress/index.php/espere/';
+        $redirect_url = get_option('_rttr_pagina_de_no_confirmado');
         wp_safe_redirect( $redirect_url );
         exit;
     
     //header("Location: http://localhost/wordpress/index.php/espere/");
 }
-add_action('wp_logout', 'registratr_redirect_on_logout');
+add_action('wp_logout', 'registratr_redirect_on_logout', 10);
 ?>
