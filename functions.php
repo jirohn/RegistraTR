@@ -130,7 +130,7 @@ function registratr_redirect_if_not_registered(){
 function registratr_check_and_logout_user(){
     $userid = get_current_user_id();
     $key = '_activado';
-    $admin = is_site_admin();
+    $admin = current_user_can( 'manage_options' );
     $usermeta = get_user_meta($userid, $key, true);
     if($usermeta != '1'&& $userid!=null && !$admin){
         $redirect_url = get_option('_rttr_pagina_de_no_confirmado');
