@@ -28,20 +28,17 @@ function registratr_add_codes() {
         $user_update = update_user_meta($user->ID, $key, registratr_code_generate());
         }
     }
-    echo('user');
+
 }
 function registratr_add_activation_id() {
     $key = '_id_activacion';$key2 = '_activado';
     $users = get_users( ['fields' => ['ID'] ] );
     foreach ( $users as $user ) {
-        if(!get_user_meta($user->ID, $key, true)){
         $user_update = update_user_meta($user->ID, $key, registratr_code_generate());
-        }
-        if(get_user_meta($user->ID, $key2)){
-            $user_update = update_user_meta($user->ID, $key2, '1');
-            }
+        $user_update = update_user_meta($user->ID, $key2, '1');
+
     }
-    echo('user');
+
 }
 function registratr_add_invited_by_id($user, $code) {
     $key='_invitado_por_id';
@@ -148,5 +145,9 @@ function registratr_redirect_on_logout(){
     
     //header("Location: http://localhost/wordpress/index.php/espere/");
 }
-//add_action('wp_logout', 'registratr_redirect_on_logout', 10);
+function registratr_redirect_on_login(){
+    $redirect_url = get_site_url();
+    return $redirect_url; 
+}
+add_action('login_redirect', 'registratr_redirect_on_login', 10);
 ?>

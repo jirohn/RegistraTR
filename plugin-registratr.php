@@ -45,14 +45,14 @@ class RegistraTrPlugin{
 
     }
     function deactivated(){
-        echo'plugin was deactivated';
+        
 
 
     }
     function uninstall(){
         $users = get_users( ['fields' => ['ID'] ] );
         foreach ( $users as $user ) {
-            $user_update = delete_user_meta($user->ID, $key, registratr_code_generate());
+            $user_update = delete_user_meta($user->ID, $key);
         }
 
     }
@@ -92,8 +92,6 @@ function new_user_meta( $meta, $user, $update )
     $meta['_codigo_para_invitar'] = registratr_code_generate();
     $meta['_id_activacion'] = registratr_code_generate();
     $meta['_activado'] = '0';
-
-
     return $meta;
 }
 

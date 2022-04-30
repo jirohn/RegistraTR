@@ -139,6 +139,7 @@ function custom_registration_shortcode() {
 }
 
 function registratr_invited_list($code){
+    $thereis=false;
     $key = '_invitado_por_ID';
     $user = get_current_user_id();
     $invitedusers = get_users(array(
