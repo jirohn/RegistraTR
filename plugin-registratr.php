@@ -97,18 +97,6 @@ function new_user_meta( $meta, $user, $update )
     return $meta;
 }
 
-/*function getinvitationidbak($code){
-    $meta_key='_codigo_para_invitar';
-    $user = reset(
-        get_users(
-         array(
-          'meta_key' => $meta_key,
-          'meta_value' => $code          
-         )
-        )
-       );
-    return $user;
-}*/
 function getinvitationid( $meta_key, $meta_value ) {
 
 	// Query for users based on the meta data

@@ -85,10 +85,10 @@ function registratr_add_config_meta() {
             $user_update = add_option($key4, 'sin url','','yes');
         }
         if(!get_option($key5)){
-            $user_update = add_option($key4, 'sin url','','yes');
+            $user_update = add_option($key5, 'sin url','','yes');
         }
         if(!get_option($key6)){
-            $user_update = add_option($key4, 'sin correo','','yes');
+            $user_update = add_option($key6, 'sin correo','','yes');
         }
 
 
