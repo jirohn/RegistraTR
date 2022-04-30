@@ -231,4 +231,7 @@ function getactivationid( $meta_key, $meta_value ) {
 	return $users[0]->ID;
 
 } // end get_user_by_meta_data
+
+
+
 ?>
