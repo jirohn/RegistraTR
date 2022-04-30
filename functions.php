@@ -130,15 +130,16 @@ function registratr_redirect_if_not_registered(){
 function registratr_check_and_logout_user(){
     $userid = get_current_user_id();
     $key = '_activado';
+    $admin = is_site_admin();
     $usermeta = get_user_meta($userid, $key, true);
-    if($usermeta != '1'&& $userid!=null){
+    if($usermeta != '1'&& $userid!=null && !$admin){
         $redirect_url = get_option('_rttr_pagina_de_no_confirmado');
         wp_safe_redirect( $redirect_url );
         //exit;
         wp_logout();
     }
 }
-add_action('wp_login', 'registratr_check_and_logout_user', 10);
+add_action('init', 'registratr_check_and_logout_user', 10);
 
 function registratr_redirect_on_logout(){
         $redirect_url = get_option('_rttr_pagina_de_no_confirmado');
