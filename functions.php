@@ -154,7 +154,7 @@ function registratr_redirect_on_logout(){
 }
 add_action('login_redirect', 'registratr_redirect_on_login', 10);
 add_action('logout_redirect', 'registratr_redirect_on_login', 10);*/
-function my_login_redirect( $redirect_to, $request) {
+function my_login_redirect( $redirect_to ) {
     $redirect_to =  home_url();
  
     return $redirect_to;
@@ -169,7 +169,7 @@ function auto_redirect_after_logout(){
 add_action('admin_init', 'disable_dashboard');
 function disable_dashboard() {
     if (current_user_can('subscriber') && is_admin()) {
-        wp_redirect(home_url()));
+        wp_redirect(home_url());
         exit;
     }
 }
