@@ -93,7 +93,7 @@ function complete_registration() {
         );
         $user = wp_insert_user( $userdata );
         registratr_add_invited_by_id($user, $code);
-        echo ('Registro completado');
+        ?> <div id="info-registro">Registro completado</div> <?php
         send_confirmation_email_to_old_user(getinvitationid('_codigo_para_invitar',$code), $user);
     }
 }
