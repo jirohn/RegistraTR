@@ -154,13 +154,13 @@ function registratr_redirect_on_logout(){
 }
 add_action('login_redirect', 'registratr_redirect_on_login', 10);
 add_action('logout_redirect', 'registratr_redirect_on_login', 10);*/
-function my_login_redirect( $redirect_to, $request, $user ) {
+function my_login_redirect( $redirect_to, $request) {
     $redirect_to =  home_url();
  
     return $redirect_to;
 }
  
-add_filter( 'login_redirect', 'my_login_redirect', 10, 3 );
+add_filter( 'login_redirect', 'my_login_redirect', 10);
 add_action('wp_logout','auto_redirect_after_logout');
 function auto_redirect_after_logout(){
   wp_redirect( home_url() );
