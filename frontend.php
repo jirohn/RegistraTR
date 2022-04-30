@@ -24,7 +24,7 @@ function registration_form( $username, $password, $email, $code ) {
     <p>
     <!--label for="code">Código de invitación</label></br-->
     <input class="input" placeholder="Código" value size="10" autocapitalize="off" type="text" name="code"  value="<?php ( isset( $_POST['code']) ? $code : null ) ?>">
-    <input  type="submit" name="submit" id="submit" class="button button-primary button-large" value="Register"/>
+    <input  type="submit" name="submit" id="submit" class="button button-primary button-large" value="Continuar"/>
     </p>
 
 
