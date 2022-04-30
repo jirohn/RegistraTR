@@ -7,23 +7,23 @@ function registration_form( $username, $password, $email, $code ) {
 <div id="login">
     <form action="<?php $_SERVER['REQUEST_URI'] ?>" method="post">
     <p>
-        <label for="username">Nombre de usuario <strong>*</strong></label><br>
-        <input class="input" value size="20" autocapitalize="off" type="text" name="username" value="<?php ( isset( $_POST['username'] ) ? $username : null ) ?>">
+        <!--label for="username">Nombre de usuario <strong>*</strong></label><br-->
+        <input class="input" placeholder="Nombre de usuario" value size="20" autocapitalize="off" type="text" name="username" value="<?php ( isset( $_POST['username'] ) ? $username : null ) ?>">
     </p>
      
     <p>
-        <label for="password">Contraseña <strong>*</strong></label><br>
-        <input class="input" value size="20" autocapitalize="off" type="password" name="password" value="<?php ( isset( $_POST['password'] ) ? $password : null ) ?>">
+        <!--label for="password">Contraseña <strong>*</strong></label><br-->
+        <input class="input" placeholder="Contraseña" value size="20" autocapitalize="off" type="password" name="password" value="<?php ( isset( $_POST['password'] ) ? $password : null ) ?>">
     </p>
      
     <p>
-    <label for="email">Email <strong>*</strong></label><br>
-    <input class="input" value size="20" type="text" name="email" value="<?php ( isset( $_POST['email']) ? $email : null ) ?>">
+    <!--label for="email">Email <strong>*</strong></label><br-->
+    <input class="input" placeholder="E-mail" value size="20" type="text" name="email" value="<?php ( isset( $_POST['email']) ? $email : null ) ?>">
     </p>
      
     <p>
-    <label for="code">Código de invitación</label></br>
-    <input class="input" value size="10" autocapitalize="off" type="text" name="code"  value="<?php ( isset( $_POST['code']) ? $code : null ) ?>">
+    <!--label for="code">Código de invitación</label></br-->
+    <input class="input" placeholder="Código" value size="10" autocapitalize="off" type="text" name="code"  value="<?php ( isset( $_POST['code']) ? $code : null ) ?>">
     <input  type="submit" name="submit" id="submit" class="button button-primary button-large" value="Register"/>
     </p>
 
