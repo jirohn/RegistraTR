@@ -46,7 +46,7 @@ function send_welcome_email_to_new_user($user_id) {
     
     // Sending email
     if(mail($to, $subject, $message, $headers)){
-        echo 'Your mail has been sent successfully.';
+
     } else{
         echo 'Unable to send email. Please try again.';
     }
@@ -103,7 +103,7 @@ $correotosend = get_option($firstkey);
   
   // Sending email
   if(mail($to, $subject, $message, $headers)){
-      echo 'Your mail has been sent successfully.';
+
   } else{
       echo 'Unable to send email. Please try again.';
   }
@@ -156,7 +156,7 @@ function send_acepted_email_to_new_user($user_id) {
   
   // Sending email
   if(mail($to, $subject, $message, $headers)){
-      echo 'Your mail has been sent successfully.';
+
   } else{
       echo 'Unable to send email. Please try again.';
   }

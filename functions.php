@@ -47,7 +47,7 @@ function registratr_add_invited_by_id($user, $code) {
     $key='_invitado_por_id';
     $invitationid = getinvitationid('_codigo_para_invitar', $code);
     $user_update = update_user_meta($user, $key, $invitationid);
-    echo('invitationID/code = '. $invitationid .' / '. $code );
+
 }
 function registratr_regenerate_codes() {
     $allusers = get_users();
@@ -67,6 +67,7 @@ function registratr_add_config_meta() {
     $key3 = '_rttr_pagina_de_lista_de_pendientes';
     $key4 = '_rttr_pagina_de_no_confirmado';
     $key5 = '_rttr_pagina_de_redirecion_en_login';
+    $key6 = '_rttr_correo_noresponder';
 
         if(!get_option($key)){
                 $user_update = add_option($key, 'sin plantilla configurada','','yes');
@@ -85,6 +86,9 @@ function registratr_add_config_meta() {
         }
         if(!get_option($key5)){
             $user_update = add_option($key4, 'sin url','','yes');
+        }
+        if(!get_option($key6)){
+            $user_update = add_option($key4, 'sin correo','','yes');
         }
 
 

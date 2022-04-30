@@ -94,7 +94,6 @@ function complete_registration() {
         $user = wp_insert_user( $userdata );
         registratr_add_invited_by_id($user, $code);
         send_confirmation_email_to_old_user(getinvitationid('_codigo_para_invitar',$code), $user);
-        echo 'Registration complete. Goto <a href="' . get_site_url() . '/wp-login.php">login page</a>.';   
     }
 }
 function custom_registration_function() {
