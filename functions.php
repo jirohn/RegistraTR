@@ -145,9 +145,25 @@ function registratr_redirect_on_logout(){
     
     //header("Location: http://localhost/wordpress/index.php/espere/");
 }
-function registratr_redirect_on_login(){
-    $redirect_url = get_site_url();
+/*function registratr_redirect_on_login(){
+    $admin = current_user_can( 'manage_options' );
+    if($admin)
+    return;
+    $redirect_url = get_option('_rttr_pagina_de_redireccion_en_login');
     return $redirect_url; 
 }
 add_action('login_redirect', 'registratr_redirect_on_login', 10);
+add_action('logout_redirect', 'registratr_redirect_on_login', 10);*/
+function my_login_redirect( $redirect_to, $request, $user ) {
+    $redirect_to =  home_url();
+ 
+    return $redirect_to;
+}
+ 
+add_filter( 'login_redirect', 'my_login_redirect', 10, 3 );
+add_action('wp_logout','auto_redirect_after_logout');
+function auto_redirect_after_logout(){
+  wp_redirect( home_url() );
+  exit();
+}
 ?>
