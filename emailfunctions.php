@@ -21,6 +21,10 @@ function send_welcome_email_to_new_user($user_id) {
     $msg = str_replace('{nombre usuario}', $user_full_name, $msg);
     $msg = str_replace('{enlace sitio}', '<a href='.get_site_url().'>Lista de Usuarios Pendientes</a>', $msg );
     $msg = str_replace('{p}', '<br>', $msg );
+
+
+    
+    
     $message  = '<html dir="ltr" lang="es">' . PHP_EOL;
     $message .= '<head>' . PHP_EOL;
     $message .= '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">' . PHP_EOL;
@@ -111,10 +115,11 @@ $correotosend = get_option($firstkey);
 }
 
 //NO SE AÑADE ACCION YA QUE SE LLAMA EN LA FUNCION DE REGISTRO INCLUYE DATOS
+
 function send_acepted_email_to_new_user($user_id) {
   $firstkey = '_rttr_correo_noresponder';
   $correotosend = get_option($firstkey);
-  $key = '_rttr_correo_para_aceptados';
+  $key = '_rttr_correo_para_confirmados';
 
   $user = get_userdata($user_id);
   $user_email = $user->user_email;
@@ -138,17 +143,7 @@ function send_acepted_email_to_new_user($user_id) {
   $message .= '</head>' . PHP_EOL;
   $message .= '<body style="padding:0;margin:0;">' . $msg . '</body>' . PHP_EOL;
   $message .= '</html>' . PHP_EOL;
-  
   $message = str_replace(array(chr(3)), '', $message);
-  $body = '
-            <h1>Dear ' . $user_full_name . ',</h1></br>
-            <p>Thank you for joining our site. Your account is now active.</p>
-            <p>Please go ahead and navigate around your account.</p>
-            <p>Let me know if you have further questions, I am here to help.</p>
-            <p>Enjoy the rest of your day!</p>
-            <p>Kind Regards,</p>
-            <p>poanchen</p>
-  ';
   $from = $correotosend;
   $headers = "MIME-Version: 1.0" . "\r\n";
   $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
