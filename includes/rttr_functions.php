@@ -154,25 +154,34 @@ function registratr_redirect_on_logout(){
 }
 add_action('login_redirect', 'registratr_redirect_on_login', 10);
 add_action('logout_redirect', 'registratr_redirect_on_login', 10);*/
-function my_login_redirect( $redirect_to ) {
-    $redirect_to =  home_url();
- 
-    return $redirect_to;
+function my_login_redirectbak() {
+    $key5 = '_rttr_pagina_de_redirecion_en_login';
+    $redirect_to =  get_option($key5);
+  wp_redirect( $redirect_to );
 }
- 
-add_filter( 'login_redirect', 'my_login_redirect', 10);
-add_action('wp_logout','auto_redirect_after_logout');
-function auto_redirect_after_logout(){
-  wp_redirect( home_url() );
+
+function rttr_isAdministrator() {
+if( is_user_logged_in() ){ // check if user is logged or not logged
+    $admin = current_user_can( 'manage_options' );
+    return $admin; // check if role is admin
+}
+ }
+
+
+add_action('wp_logout','auto_redirect_after_logout', 10);
+
+function auto_redirect_after_logout($user){
+    $key4 = '_rttr_pagina_de_no_confirmado';
+    
+    if(get_user_meta( $user, '_activado', true )==1)
+    $redirect_to =  get_home_url();
+    else
+    $redirect_to =  get_option( $key4 );
+  wp_redirect( $redirect_to );
   exit();
 }
-add_action('admin_init', 'disable_dashboard');
-function disable_dashboard() {
-    if (current_user_can('subscriber') && is_admin()) {
-        wp_redirect(home_url());
-        exit;
-    }
-}
+
+
 
 
 ?>

@@ -28,11 +28,11 @@ define ('EXTRACTR_PLUGIN_NAME','ExtracTr');
 /**
  * definiendo dependencias // setting dependencies
  */
-include("filters.php");
-include("functions.php");
-include("emailfunctions.php");
-include("frontend.php");
-include("frontendadmin.php");
+include("includes\\rttr_filters.php");
+include("includes\\rttr_functions.php");
+include("includes\\rttr_email_functions.php");
+include("public\\rttr_user_functions.php");
+include("admin\\rttr_admin.php");
 
 
 

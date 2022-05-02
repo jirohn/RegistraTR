@@ -1,9 +1,12 @@
 <?php
 //version final
+
+
+
 function theme_add_user_code_column( $columns ) {
     $columns['_codigo_para_invitar'] = __( 'Código', 'theme' );
     $columns['_activado'] = __( 'Estado de activación', 'theme' );
-    //$columns['_activar'] = __( 'Activar', 'theme' );
+    $columns['_activar'] = __( 'Activar', 'theme' );
 
     return $columns;
   } // end theme_add_user_code_column
@@ -19,46 +22,80 @@ function theme_show_user_code_data( $value, $column_name, $user_id ) {
     return 'Activado';
     else return 'Desactivado';
   }
-  /*if( '_activar' == $column_name ) {
+  if( '_activar' == $column_name ) {
     if(get_user_meta( $user_id, '_activado', true )=='0')
-    say_hello_function($user_id);
+    return rttr_activate_button($user_id);
   else
     return rttr_disabled_button();  
-  }*/
+  }
 
   } // end theme_show_user_code_data
   add_action( 'manage_users_custom_column', 'theme_show_user_code_data', 10, 3 );
   
-  function say_hello_function($user){
-    if(isset($_POST['submit'])) {
-      global $user_id;
-      $user_id   =   sanitize_text_field($_POST['id']);
-
-      rttr_activate_user(
-        $user
-      );
-
-    }
-      return rttr_activate_button($user);
-      echo '<h1>BOTONADOOOOOOOOO';
-    }
+  
   function rttr_activate_user($user_id){
   update_user_meta( $user_id, '_activado', "1");
-  echo '<h1>CAMBIADOOOOOOOOO';
+  
 }
  function rttr_activate_button($user_id){
-  return $html = '<form action='. $_SERVER["REQUEST_URI"] .' method="post" id="activacion"><input name="id" id="id" value='. $user_id .'><button class="button button-primary activate" type="submit" name="activate" id="activate" type="button" role="button">Activar</button></form>';
- }
+    return $html ="<button class='button button-primary activate-user-button' value='". $user_id ."' 'type='button' ondblclick = 'myFunction();'>Activar</button>
+    <script>
+    jQuery(document).ready(function($) {
+    
+      $('.activate-user-button').click(function(){
+
+        // This does the ajax request (The Call).
+
+      $.ajax({
+          url: ajaxurl, // Since WP 2.8 ajaxurl is always defined and points to admin-ajax.php
+          data: {
+              'action':'rttr_activate_request', // This is our PHP function below
+              'user' : $('.activate-user-button').val() // This is the variable we are sending via AJAX
+          },
+          success:function(data) {
+      // This outputs the result of the ajax request (The Callback)
+              window.alert(data);
+          },  
+          error: function(errorThrown){
+              window.alert(errorThrown);
+          }
+      });   
+  });
+  });
+    </script>";
+    }
+
  function rttr_disabled_button(){
-  return  $html = '<button class="button button-primary" disabled="true" type="button" role="button">Activar</button>';
+  return  $html = '<button class="button button-primary" disabled="true" type="button" role="button">Activar</button>
+  ';
  }
+
+
+ function rttr_activate_request() {
+
+  // The $_REQUEST contains all the data sent via AJAX from the Javascript call
+  if ( isset($_REQUEST) ) {
+
+      $user = $_REQUEST['user'];
+      // Now let's return the result to the Javascript function (The Callback) 
+      rttr_activate_user($user);
+      echo 'El usuario ha sido activado satisfactoriamente' ;        
+  }
+
+  // Always die in functions echoing AJAX content
+ die();
+}
+
+// This bit is a special action hook that works with the WordPress AJAX functionality. 
+add_action( 'wp_ajax_rttr_activate_request', 'rttr_activate_request' ); 
+
+
 function registratr_config_page($page){
   $key = '_rttr_correo_para_invitados';
   $key1 = '_rttr_correo_para_confirmados';
   $key2 = '_rttr_correo_para_anfitriones';
   $key3 = '_rttr_pagina_de_lista_de_pendientes';
   $key4 = '_rttr_pagina_de_no_confirmado';
-  $key5 = '_rttr_pagina_de_redirecion_en_login';
   $key6 = '_rttr_correo_noresponder';
   $emailtxt1 = get_option($key2);
   $emailtxt1 = utf8_decode($emailtxt1);
@@ -66,7 +103,6 @@ function registratr_config_page($page){
   $emailtxt2 = get_option($key); 
   $page1val = get_option($key3);
   $page2val = get_option($key4);
-  $page3val = get_option($key5);
   $correo = get_option($key6);
     ?>
     <meta charset="UTF-8">
@@ -144,11 +180,6 @@ function registratr_config_page($page){
          </td>       
         </tr>
         <tr>
-        <th scope="row"><label for="page3">Pagina de redireccion tras inicio de sesion</label></th>
-        <td><input type="text" placeholder="Redirecion tras login" name="page3"  class="regular-text" value="<?php echo $page3val ?>">
-         </td>       
-        </tr>
-        <tr>
         <th scope="row"><label for="correo">direccion Correo para envio de emails</label></th>
         <td><input type="text" placeholder="Correo de envios de notificaciones" name="correo"  class="regular-text" value="<?php echo $correo ?>">
          </td>       
@@ -163,14 +194,13 @@ function registratr_config_page($page){
 <?php
 }
 
-function save_options_from_setup($opt2, $opt, $opt3, $pg1, $pg2, $pg3, $correo ){
+function save_options_from_setup($opt2, $opt, $opt3, $pg1, $pg2, $correo ){
 
   $key = '_rttr_correo_para_invitados';
   $key1 = '_rttr_correo_para_confirmados';
   $key2 = '_rttr_correo_para_anfitriones';
   $key3 = '_rttr_pagina_de_lista_de_pendientes';
   $key4 = '_rttr_pagina_de_no_confirmado';
-  $key5 = '_rttr_pagina_de_redirecion_en_login';
   $key6 = '_rttr_correo_noresponder';
 
   if(get_option($key)){
@@ -191,9 +221,6 @@ function save_options_from_setup($opt2, $opt, $opt3, $pg1, $pg2, $pg3, $correo )
   $user_update = update_option($key4, $pg2);
   }
   if(get_option($key5)){
-  $user_update = update_option($key5, $pg3);
-  }
-  if(get_option($key5)){
     $user_update = update_option($key6, $correo);
     }
 
@@ -202,14 +229,13 @@ function registratr_config_form() {
   if ( isset($_POST['submit'] ) ) {
    
       // sanitize user form input
-      global $mail1, $mail2, $mail3, $page1, $page2, $page3 ,$correo;
+      global $mail1, $mail2, $mail3, $page1, $page2, $correo;
       $mail1   =   sanitize_html($_POST['email1']);
       
       $mail2   =   sanitize_html($_POST['email2']);
       $mail3   =   sanitize_html($_POST['email3']);
       $page1  =   sanitize_text_field($_POST['page1']);
       $page2   =   sanitize_text_field($_POST['page2']);
-      $page3   =   sanitize_text_field($_POST['page3']);
       $correo = sanitize_email($_POST['correo']);
 
  
@@ -219,7 +245,6 @@ function registratr_config_form() {
         $mail3,
         $page1,
         $page2,
-        $page3,
         $correo
       );
   }
