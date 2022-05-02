@@ -4,25 +4,25 @@ function registration_form( $username, $password, $email, $code ) {
 
     ?>
     
-<div id="login">
+<div id="singup">
     <form action="<?php $_SERVER['REQUEST_URI'] ?>" method="post">
     <p>
-        <label for="username" style="display:none">Nombre de usuario <strong>*</strong></label><br>
+        <label for="username" style="display:none">Nombre de usuario <strong>*</strong></label>
         <input class="input" placeholder="Nombre de usuario" value size="20" autocapitalize="off" type="text" name="username" value="<?php ( isset( $_POST['username'] ) ? $username : null ) ?>">
     </p>
      
     <p>
-        <label for="password" style="display:none">Contraseña <strong>*</strong></label><br>
+        <label for="password" style="display:none">Contraseña <strong>*</strong></label>
         <input class="input" placeholder="Contraseña" value size="20" autocapitalize="off" type="password" name="password" value="<?php ( isset( $_POST['password'] ) ? $password : null ) ?>">
     </p>
      
     <p>
-    <label for="email" style="display:none">Email <strong>*</strong></label><br>
+    <label for="email" style="display:none">Email <strong>*</strong></label>
     <input class="input" placeholder="E-mail" value size="20" type="text" name="email" value="<?php ( isset( $_POST['email']) ? $email : null ) ?>">
     </p>
      
     <p>
-    <label for="code" style="display:none">Código de invitación</label></br>
+    <label for="code" style="display:none">Código de invitación</label>
     <input class="input" placeholder="Código" value size="10" autocapitalize="off" type="text" name="code"  value="<?php ( isset( $_POST['code']) ? $code : null ) ?>">
     <input  type="submit" name="submit" id="submit" class="button button-primary button-large" value="Continuar"/>
     </p>
