@@ -42,7 +42,7 @@ class RegistraTrPlugin{
         registratr_add_codes();
         registratr_add_activation_id();
         registratr_add_config_meta();
-        echo'plugin was activated';
+
 
     }
     function deactivated(){
@@ -92,7 +92,7 @@ function new_user_meta( $meta, $user, $update )
         return $meta;
     $meta['_codigo_para_invitar'] = registratr_code_generate();
     $meta['_id_activacion'] = registratr_code_generate();
-    $meta['_activado'] = '0';
+    $meta['_activado'] = '0';   
     return $meta;
 }
 

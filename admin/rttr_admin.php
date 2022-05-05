@@ -4,6 +4,7 @@
 
 
 function theme_add_user_code_column( $columns ) {
+    $columns['_dni'] = __('DNI', 'theme');
     $columns['_codigo_para_invitar'] = __( 'Código', 'theme' );
     $columns['_activado'] = __( 'Estado de activación', 'theme' );
     $columns['_activar'] = __( 'Activar', 'theme' );
@@ -13,7 +14,9 @@ function theme_add_user_code_column( $columns ) {
 add_filter( 'manage_users_columns', 'theme_add_user_code_column' );
 
 function theme_show_user_code_data( $value, $column_name, $user_id ) {
-  
+  if( '_dni' == $column_name ) {
+    return get_user_meta( $user_id, '_rttr_user_document_identification', true );
+  }
   if( '_codigo_para_invitar' == $column_name ) {
       return get_user_meta( $user_id, '_codigo_para_invitar', true );
   } // end if

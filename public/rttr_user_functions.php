@@ -20,6 +20,10 @@ function registration_form( $username, $password, $email, $code ) {
     <label for="email" style="display:none">Email <strong>*</strong></label>
     <input class="input" placeholder="E-mail" value size="20" type="text" name="email" value="<?php ( isset( $_POST['email']) ? $email : null ) ?>">
     </p>
+    <p>
+        <label for="dni" style="display:none">DNI<strong>*</strong></label>
+        <input class="input" placeholder="DNI" value size="20" autocapitalize="off" type="text" name="dni" value="<?php ( isset( $_POST['dni'] ) ? $dni : null ) ?>">
+    </p>
      
     <p>
     <label for="code" style="display:none">Código de invitación</label>
@@ -41,33 +45,41 @@ function registration_form( $username, $password, $email, $code ) {
 
 
 
-function registration_validation( $username, $password, $email, $code )  {
+function registration_validation( $username, $password, $email, $code, $dni )  {
     global $reg_errors;
     $reg_errors = new WP_Error;
-    if ( empty( $username ) || empty( $password ) || empty( $email ) || empty($code)) {
-        $reg_errors->add('field', 'Required form field is missing');
+    if ( empty( $username ) || empty( $password ) || empty( $email ) || empty($code) || empty($dni)) {
+        $reg_errors->add('field', 'Falta uno de los campos');
     }
     if ( 4 > strlen( $username ) ) {
-        $reg_errors->add( 'username_length', 'Username too short. At least 4 characters is required' );
+        $reg_errors->add( 'username_length', 'El nombre de usuario es muy corto, minimo 4 caracteres' );
     }
     if ( username_exists( $username ) )
-    $reg_errors->add('user_name', 'Sorry, that username already exists!');
+    $reg_errors->add('user_name', 'El nombre de usuario ya existe!');
     if ( ! validate_username( $username ) ) {
-        $reg_errors->add( 'username_invalid', 'Sorry, the username you entered is not valid' );
+        $reg_errors->add( 'username_invalid', 'El nombre de usuario es invalido' );
     }
-    if ( 5 > strlen( $password ) ) {
-        $reg_errors->add( 'password', 'Password length must be greater than 5' );
+    if ( 8 > strlen( $password ) ) {
+        $reg_errors->add( 'password', 'La contraseña debe ser mayor de 8 caracteres' );
     }
     if ( !is_email( $email ) ) {
-        $reg_errors->add( 'email_invalid', 'Email is not valid' );
+        $reg_errors->add( 'email_invalid', 'El correo es invalido' );
     }
     if ( email_exists( $email ) ) {
-        $reg_errors->add( 'email', 'Email Already in use' );
+        $reg_errors->add( 'email', 'El correo ya esta en uso' );
     }
     if ( ! empty( $code ) ) {
         if ( ! registratr_code_exists( $code) ) {
-            $reg_errors->add( 'code', 'This code is not valid');
+            $reg_errors->add( 'code', 'Este codigo es invalido');
         }
+    }
+    if ( ! empty( $dni ) ) {
+        if ( ! registratr_code_exists( $code) ) {
+            $reg_errors->add( 'DNI', 'Este DNI es invalido');
+        }
+    }
+    if ( 9 < strlen( $dni ) || 9 > strlen( $dni ) ) {
+        $reg_errors->add( 'DNI', 'El DNI no es correcto' );
     }
     if ( is_wp_error( $reg_errors ) ) {
  
@@ -83,16 +95,18 @@ function registration_validation( $username, $password, $email, $code )  {
     }
 }
 function complete_registration() {
-    global $reg_errors, $username, $password, $email, $code;
+    global $reg_errors, $username, $password, $email, $code, $dni;
     if ( 1 > count( $reg_errors->get_error_messages() ) ) {
         $userdata = array(
         'user_login'    =>   $username,
         'user_email'    =>   $email,
         'user_pass'     =>   $password,
-        'codetoregister'      =>   $code,
+        'codetoregister'=>   $code,
+        'dni'           => $dni,
         );
         $user = wp_insert_user( $userdata );
-        registratr_add_invited_by_id($user, $code);
+        registratr_add_invited_by_id($user, $code, $dni);
+
         ?> <div id="info-registro">Registro completado</div> <?php
         send_confirmation_email_to_old_user(getinvitationid('_codigo_para_invitar',$code), $user);
     }
@@ -104,14 +118,16 @@ function custom_registration_function() {
         $_POST['password'],
         $_POST['email'],
         $_POST['code'],
+        $_POST['dni'],
         );
             
         // sanitize user form input
-        global $username, $password, $email, $code;
+        global $username, $password, $email, $code, $dni;
         $username   =   sanitize_user( $_POST['username'] );
         $password   =   esc_attr( $_POST['password'] );
         $email      =   sanitize_email( $_POST['email'] );
         $code    =   esc_attr( $_POST['code'] );
+        $dni     =      sanitize_text_field( $_POST['dni'] );
     
         // call @function complete_registration to create the user
         // only when no WP_error is found
@@ -119,7 +135,8 @@ function custom_registration_function() {
         $username,
         $password,
         $email,
-        $code
+        $code,
+        $dni
         );
     }
     

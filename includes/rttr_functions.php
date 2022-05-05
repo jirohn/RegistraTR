@@ -34,16 +34,18 @@ function registratr_add_activation_id() {
     $key = '_id_activacion';$key2 = '_activado';
     $users = get_users( ['fields' => ['ID'] ] );
     foreach ( $users as $user ) {
+        $user_update = update_user_meta($user->ID, '_rttr_user_document_identification', '12345678A');
         $user_update = update_user_meta($user->ID, $key, registratr_code_generate());
         $user_update = update_user_meta($user->ID, $key2, '1');
 
     }
 
 }
-function registratr_add_invited_by_id($user, $code) {
+function registratr_add_invited_by_id($user, $code, $dni) {
     $key='_invitado_por_id';
     $invitationid = getinvitationid('_codigo_para_invitar', $code);
     $user_update = update_user_meta($user, $key, $invitationid);
+    $user_update = update_user_meta($user, '_rttr_user_document_identification', $dni);
 
 }
 function registratr_regenerate_codes() {
