@@ -74,8 +74,8 @@ function registration_validation( $username, $password, $email, $code, $dni )  {
         }
     }
     if ( ! empty( $dni ) ) {
-        if ( ! registratr_code_exists( $code) ) {
-            $reg_errors->add( 'DNI', 'Este DNI es invalido');
+        if ( rttr_dni_compare($dni) ) {
+            $reg_errors->add( 'DNI', 'Este DNI esta en uso!');
         }
     }
     if ( 9 < strlen( $dni ) || 9 > strlen( $dni ) ) {
@@ -93,6 +93,17 @@ function registration_validation( $username, $password, $email, $code, $dni )  {
         }
      
     }
+}
+function rttr_dni_compare($dni){
+    $users = get_users(array(
+        'meta_key' => '_rttr_user_document_identification',
+        'meta_value' => $dni
+    ));
+    $exists = false;
+    if(!empty($users))
+            $exists=true;
+    
+    return $exists;
 }
 function complete_registration() {
     global $reg_errors, $username, $password, $email, $code, $dni;
