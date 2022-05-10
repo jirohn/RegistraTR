@@ -73,7 +73,7 @@ function salcode_add_plugin_page_settings_link( $links ) {
 	return $links;
 }
 
-wp_register_style('invitation_code_dashicons', plugins_url('RegistraTR/css/invitation-code-icon.css'));
+wp_register_style('invitation_code_dashicons', plugins_url('RegistraTR-Invitation-code/css/invitation-code-icon.css'));
 wp_enqueue_style('invitation_code_dashicons');
 
 function registratr_menu(){
