@@ -115,6 +115,11 @@ function registratr_config_page($page){
 
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;700&display=swap');
+
+      @keyframes appear {
+        0% {opacity: 0;}
+        100% {opacity: 1;}
+      }
       body {
 
       }
@@ -153,7 +158,7 @@ function registratr_config_page($page){
       .ic_admin h1 {
         font-family: 'Nunito Sans', sans-serif;
         font-weight: 300;
-        font-size:50px;
+        font-size:40px;
       }
 
       .nav-tabs {
@@ -196,7 +201,8 @@ function registratr_config_page($page){
       }
 
       .nav-tabs-inner > li{
-        padding:.5em 1em;
+        padding:.5em .5em;
+        
       }
       .nav-tabs-inner > li:nth-child(3){
         background-color: #EDEDED;
@@ -233,19 +239,23 @@ function registratr_config_page($page){
       .tab-content > .tab-pane.active {
         display: block;
         background-color:#F8F8F8;
+        animation-name: appear;
+        animation-duration: .3s;
       }
 
       .tab-inner-content > .tab-inner-pane {
         display: none;
         float:left;
         width:90%;
-        padding:0em 0em 0em 1em;
+        padding:0em 0em 0em 0em;
         margin-top:5px;
       }
 
       .tab-inner-content > .tab-inner-pane.active {
         display: block;
         background-color:#F8F8F8;
+        animation-name: appear;
+        animation-duration: .3s;
       }
 
       textarea {
@@ -254,6 +264,17 @@ function registratr_config_page($page){
         border-color:#D8D8D8;
         padding:2em;
         font-family: 'Nunito Sans', sans-serif;
+        transition: all .2s;
+      }
+      
+
+      textarea:focus, input[type=text]:focus{
+        border-color: black;
+        box-shadow: none;
+      }
+
+      input[type=text] {
+        transition:all .2s;
       }
 
       .ad-form-icon {
@@ -292,8 +313,8 @@ function registratr_config_page($page){
       .ic-redirec-block label {
         color:black;
         font-family: 'Nunito Sans', sans-serif;
-        font-size:15px;
-        font-weight: 600;
+        font-size:13px;
+        font-weight: 500;
         margin-bottom:.5em;
       }
 
@@ -303,6 +324,24 @@ function registratr_config_page($page){
         border-radius: 0px;
         border-color:#D8D8D8;
         padding:0.3em 1em;
+        color:#D8D8D8;
+        transition:all .2s;
+      }
+
+      .ic-redirec-block input::placeholder {
+        font-family: 'Nunito Sans', sans-serif;
+        padding:0.3em 0em;
+        color:#D8D8D8;
+        transition:all .2s;
+      }
+
+      .ic-redirec-block input:hover::placeholder, .ic-redirec-block input:focus::placeholder {
+        padding:0.3em .5em;
+      }
+
+      .ic-redirec-block input:hover, .ic-redirec-block input:focus {
+        color:black;
+        border-color:#0e0e0e;
       }
       .button.button-primary.ic-btn {
         background-color:white;
@@ -320,16 +359,119 @@ function registratr_config_page($page){
         
       }
 
+      .btn-txt-add {
+        background-color:white;
+        font-family: 'Nunito Sans', sans-serif;
+        padding: .7em 2em;
+        border: solid 1px white;
+        margin-top: 15px;
+        margin-right: 5px;
+        font-weight: 400;
+        transition: all .2s;
+      }
+
+      .btn-txt-add:hover  {
+        border: solid 1px #D8D8D8;
+        cursor: pointer;
+      }
+
+      .btn-txt-add:focus  {
+        border: solid 1px #b2dea6;
+      }
+
     </style>
 
    <div class="wrap ic_admin">
-   <h1><b>Invitation</b> code</h1><img width="120px" src="<?php echo plugin_dir_url (__FILE__) . '../includes/images/bibiailogo.svg' ?>" />
+   <h1><b>Invitation</b> code</h1><img width="100px" src="<?php echo plugin_dir_url (__FILE__) . '../includes/images/bibiailogo.svg' ?>" />
    <form action="<?php $_SERVER['REQUEST_URI'] ?>" method="post" id="registro">
 
   <!-- tabs navigator -->
 
     <script>
-      window.addEventListener("load", function() {
+      jQuery(document).ready(function($) {
+
+        $('.btn-txt-add.ns').click(function(){
+          var txt = $('#form-afiliado').val();
+          var btnTxt = $('.btn-txt-add.ns').val();
+
+          $('#form-afiliado').val(txt + btnTxt );
+        });
+
+        $('.btn-txt-add.es').click(function(){
+          var txt = $('#form-afiliado').val();
+          var btnTxt = $('.btn-txt-add.es').val();
+
+          $('#form-afiliado').val(txt + btnTxt );
+        });
+
+        $('.btn-txt-add.lu').click(function(){
+          var txt = $('#form-afiliado').val();
+          var btnTxt = $('.btn-txt-add.lu').val();
+
+          $('#form-afiliado').val(txt + btnTxt );
+        });
+
+        $('.btn-txt-add.nu').click(function(){
+          var txt = $('#form-afiliado').val();
+          var btnTxt = $('.btn-txt-add.nu').val();
+
+          $('#form-afiliado').val(txt + btnTxt );
+        });
+
+        $('.btn-txt-add.ni').click(function(){
+          var txt = $('#form-afiliado').val();
+          var btnTxt = $('.btn-txt-add.ni').val();
+
+          $('#form-afiliado').val(txt + btnTxt );
+        });
+
+        // "Espera" form
+
+        $('.btn-txt-add.ns1').click(function(){
+          var txt = $('#form-espera').val();
+          var btnTxt = $('.btn-txt-add.ns1').val();
+
+          $('#form-espera').val(txt + btnTxt );
+        });
+
+        $('.btn-txt-add.es1').click(function(){
+          var txt = $('#form-espera').val();
+          var btnTxt = $('.btn-txt-add.es1').val();
+
+          $('#form-espera').val(txt + btnTxt );
+        });
+
+        $('.btn-txt-add.nu1').click(function(){
+          var txt = $('#form-espera').val();
+          var btnTxt = $('.btn-txt-add.nu1').val();
+
+          $('#form-espera').val(txt + btnTxt );
+        });
+
+        // "Aceptado" form
+
+        $('.btn-txt-add.ns2').click(function(){
+          var txt = $('#form-aceptado').val();
+          var btnTxt = $('.btn-txt-add.ns2').val();
+
+          $('#form-aceptado').val(txt + btnTxt );
+        });
+
+        $('.btn-txt-add.es2').click(function(){
+          var txt = $('#form-aceptado').val();
+          var btnTxt = $('.btn-txt-add.es2').val();
+
+          $('#form-aceptado').val(txt + btnTxt );
+        });
+
+        $('.btn-txt-add.nu2').click(function(){
+          var txt = $('#form-aceptado').val();
+          var btnTxt = $('.btn-txt-add.nu2').val();
+
+          $('#form-aceptado').val(txt + btnTxt );
+        });
+
+        
 
         var tabs = document.querySelectorAll("ul.nav-tabs > li");
 
@@ -354,7 +496,7 @@ function registratr_config_page($page){
 
       });
 
-      window.addEventListener("load", function() {
+      jQuery(document).ready(function() {
 
         var tabs = document.querySelectorAll("ul.nav-tabs-inner > li");
 
@@ -376,7 +518,7 @@ function registratr_config_page($page){
           clickedTab.classList.add("active");
           document.querySelector(activePaneID).classList.add("active");
         }
-
+        
         });
 
 
@@ -406,8 +548,12 @@ function registratr_config_page($page){
               el anfitrión apruebe la solicitud con el enlace de “Lista de espera” previamente creado.</p></div>
             </div><br>
             <label style="display:none;" for="email1">email para usuarios registrados</label>
-            <textarea id="message" placeholder="Email para anfitrion" rows = "10" cols = "50" type="textarea" form="registro" name="email1" class="regular-text"><?php echo $emailtxt1 ?></textarea>
-            <button id="btn">Append text</button>
+            <textarea id="form-afiliado" placeholder="Email para anfitrion" rows = "10" cols = "50" type="textarea" form="registro" name="email1" class="regular-text"><?php echo $emailtxt1 ?></textarea>
+            <button class="btn-txt-add ns" type='button' value="&#123;nombre sitio&#125;"><i style="margin-right:10px;" class='bx bx-plus'></i>Nombre de la página</button>
+            <button class="btn-txt-add es" type='button' value="&#123;enlace sitio&#125;"><i style="margin-right:10px;" class='bx bx-plus'></i>Enlace</button>
+            <button class="btn-txt-add lu" type='button' value="&#123;lista usuarios&#125;"><i style="margin-right:10px;" class='bx bx-plus'></i>Lista de espera</button>
+            <button class="btn-txt-add nu" type='button' value="&#123;nombre usuario&#125;"><i style="margin-right:10px;" class='bx bx-plus'></i>Nombre anfitrión</button>
+            <button class="btn-txt-add ni" type='button' value="&#123;nombre invitado&#125;"><i style="margin-right:10px;" class='bx bx-plus'></i>Nombre invitado</button>
           </div>
 
           <div id="tab-espera" class="tab-inner-pane">
@@ -416,7 +562,10 @@ function registratr_config_page($page){
             <div class="ad-form-text"><p>El usuario que ha procedido con el registro recibirá este correo.</p></div>
             </div><br>
           <label style="display:none;" for="email2">email para nuevos usuarios</label>
-          <textarea placeholder="Email para invitado" rows = "10" cols = "50" type="textarea" name="email2"  class="regular-text"><?php echo $emailtxt2 ?></textarea>
+          <textarea id="form-espera" placeholder="Email para invitado" rows = "10" cols = "50" type="textarea" name="email2"  class="regular-text"><?php echo $emailtxt2 ?></textarea>
+          <button class="btn-txt-add ns1" type='button' value="&#123;nombre sitio&#125;"><i style="margin-right:10px;" class='bx bx-plus'></i>Nombre de la página</button>
+          <button class="btn-txt-add es1" type='button' value="&#123;enlace sitio&#125;"><i style="margin-right:10px;" class='bx bx-plus'></i>Enlace</button>
+          <button class="btn-txt-add nu1" type='button' value="&#123;nombre usuario&#125;"><i style="margin-right:10px;" class='bx bx-plus'></i>Nombre usuario</button>
           </div>
 
           <div id="tab-aceptado" class="tab-inner-pane">
@@ -426,7 +575,10 @@ function registratr_config_page($page){
               anfitrión que le ha invitado. </p></div>
             </div><br>
           <label style="display:none;" for="email3">email para usuarios confirmados</label>
-          <textarea placeholder="Email de aceptacion" rows = "10" cols = "50" type="textarea" name="email3"  class="regular-text"><?php echo $emailtxt3 ?></textarea>
+          <textarea id="form-aceptado" placeholder="Email de aceptacion" rows = "10" cols = "50" type="textarea" name="email3"  class="regular-text"><?php echo $emailtxt3 ?></textarea>
+          <button class="btn-txt-add ns2" type='button' value="&#123;nombre sitio&#125;"><i style="margin-right:10px;" class='bx bx-plus'></i>Nombre de la página</button>
+          <button class="btn-txt-add es2" type='button' value="&#123;enlace sitio&#125;"><i style="margin-right:10px;" class='bx bx-plus'></i>Enlace</button>
+          <button class="btn-txt-add nu2" type='button' value="&#123;nombre usuario&#125;"><i style="margin-right:10px;" class='bx bx-plus'></i>Nombre usuario</button>
           </div>
         </div>
         <!--end of "avisos" tab-->
@@ -446,6 +598,8 @@ function registratr_config_page($page){
 
       <div id="tab-ajustes" class="tab-pane">
       <div class="ic-redirec-block">
+      <div class="ad-form-icon"><i class='bx bx-info-circle info2'></i></div>
+            <div class="ad-form-text"><p>Desde el siguiente correo electrónico se mandarán los avisos predefinidos en la pestaña correspondiente. </p></div><br>
         <label for="correo">Correo emisor</label><br>
         <input type="text" placeholder="Correo de envios de notificaciones" name="correo"  class="regular-text" value="<?php echo $correo ?>">
       </div></div>

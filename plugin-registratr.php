@@ -1,13 +1,14 @@
 <?php
 //version final
 /**
- * Plugin Name:       RegistraTr
- * Description:       Plugin de registro de usuario por clave de invitación. [registratr_register] para mostrar menú de registro con introducción de código de invitación. [registratr_lock] Para bloquear contenido. [registratr_show_code]Para mostrar el codigo de invitacion al usuario actual. [registratr_users] Para mostrar lista de usuarios pendientes. Ver opciones en el panel de RegistraTr
- * Version:           1.11.0
+ * Plugin Name:       Invitation code
+ * Plugin URI:        https://bibiai.es/
+ * Description:       Permite a los usuarios tener un código de afiliado con el que los visitantes pueden registrarse, con un sistema de validación por parte del afiliado que ha compartido su código.
+ * Version:           1.2.0
  * Requires at least: 5.2
  * Requires PHP:      7.2
- * Author:            Pablo Reyes (Jirohn)
- * Author URI:        mailto:canariasraptv@gmail.com
+ * Author:            Bibiai
+ * Author URI:        mailto:support@bibiai.es
  * Update URI:        https://github.com/jirohn/RegistraTR.git
  * License:           GPL v2 or later
  */
@@ -64,8 +65,19 @@ if(class_exists('RegistraTrPlugin')){
     $registratrPlugin = new RegistraTrPlugin();
 }
 
+add_filter('plugin_action_links_'.plugin_basename(__FILE__), 'salcode_add_plugin_page_settings_link');
+function salcode_add_plugin_page_settings_link( $links ) {
+	$links[] = '<a href="' .
+		admin_url( 'admin.php?page=invitation-code' ) .
+		'">' . __('Settings') . '</a>';
+	return $links;
+}
+
+wp_register_style('invitation_code_dashicons', plugins_url( RegistraTR.'/css/invitation-code-icon.css'));
+wp_enqueue_style('invitation_code_dashicons');
+
 function registratr_menu(){
-    add_menu_page( 'Registratr config', 'RegistraTr', 'manage_options', 'registratr-plugin', 'registratr_config_form' );
+    add_menu_page( 'Registratr config', 'Invitation code', 'manage_options', 'invitation-code', 'registratr_config_form', 'dashicons-ic-icon');
 }
 add_action('admin_menu', 'registratr_menu');
 
