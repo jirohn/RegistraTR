@@ -114,12 +114,18 @@ function registratr_config_page($page){
     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
 
     <style>
+      @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;700&display=swap');
       body {
 
       }
 
       .fa {
         padding: 10px;
+      }
+
+      a:focus {
+        box-shadow: none!important;
+        outline: 0px solid transparent!important;
       }
       #infotext,
       #infotext2,
@@ -136,12 +142,317 @@ function registratr_config_page($page){
       .info3:hover ~ #infotext3 {
         display: block;
       }
+
+      p {font-family: 'Nunito Sans', sans-serif;color:black;}
+
+      .wrap.ic_admin {
+        background:white;
+        padding:2em 5em;
+      }
+
+      .ic_admin h1 {
+        font-family: 'Nunito Sans', sans-serif;
+        font-weight: 300;
+        font-size:50px;
+      }
+
+      .nav-tabs {
+        float:left;
+        width:100%;
+        margin:0;
+        margin-top: 3em;
+        list-style-type: none;
+      }
+
+      .nav-tabs-inner {
+        float:left;
+        width:100%;
+        margin:0;
+        padding:0;
+        list-style-type: none;
+      }
+
+      .nav-tabs > li,
+      .nav-tabs-inner > li {
+        float:left;
+      }
+
+      .nav-tabs > li > a {
+        margin-right:5px;
+        background-color:#EDEDED;
+        padding:.5em 3em;
+        text-decoration: none;
+        color:black;
+        font-family: 'Nunito Sans', sans-serif;
+      }
+
+      .nav-tabs-inner > li > a {
+        margin-right:5px;
+        padding:.5em 0em;
+        text-decoration: none;
+        color:black;
+        font-family: 'Nunito Sans', sans-serif;
+        opacity:.3;
+      }
+
+      .nav-tabs-inner > li{
+        padding:.5em 1em;
+      }
+      .nav-tabs-inner > li:nth-child(3){
+        background-color: #EDEDED;
+      }
+
+      .nav-tabs > li > a:hover,
+      .nav-tabs > li > a:focus {
+        background-color:#DEDEDE;
+        transition: all .2s;
+      }
+
+      .nav-tabs-inner > li > a:hover,
+      .nav-tabs-inner > li > a:focus {
+        opacity:1;
+        transition: all .2s;
+      }
+      .nav-tabs > li.active > a {
+        background-color:black;
+        color:white;
+      }
+
+      .nav-tabs-inner > li.active > a {
+        opacity:1;
+      }
+
+      .tab-content > .tab-pane {
+        display: none;
+        float:left;
+        width:100%;
+        padding:2em 2em;
+        margin-top:5px;
+      }
+
+      .tab-content > .tab-pane.active {
+        display: block;
+        background-color:#F8F8F8;
+      }
+
+      .tab-inner-content > .tab-inner-pane {
+        display: none;
+        float:left;
+        width:90%;
+        padding:0em 0em 0em 1em;
+        margin-top:5px;
+      }
+
+      .tab-inner-content > .tab-inner-pane.active {
+        display: block;
+        background-color:#F8F8F8;
+      }
+
+      textarea {
+        width: 100%!important;;
+        border-radius: 0px;
+        border-color:#D8D8D8;
+        padding:2em;
+        font-family: 'Nunito Sans', sans-serif;
+      }
+
+      .ad-form-icon {
+        float:left;
+        display: table;
+        height: 80px;
+        width:40px;
+        text-align: center;
+        background-color:#F5E6D1;
+      }
+
+      .ad-form-icon i {
+        opacity: 0.5;
+        display: table-cell; 
+        vertical-align:middle;
+      }
+
+      .ad-form-text {
+        background-color:white;
+        display: table;
+        height: 80px;
+        width:90%;
+        padding: 0 2em;
+      }
+
+      .ad-form-text p {
+        display: table-cell; 
+        vertical-align:middle;
+      }
+
+      .ic-redirec-block {
+        display: block;
+        margin-bottom:1em;
+      }
+
+      .ic-redirec-block label {
+        color:black;
+        font-family: 'Nunito Sans', sans-serif;
+        font-size:15px;
+        font-weight: 600;
+        margin-bottom:.5em;
+      }
+
+      .ic-redirec-block input {
+        font-family: 'Nunito Sans', sans-serif;
+        margin-top:.5em;
+        border-radius: 0px;
+        border-color:#D8D8D8;
+        padding:0.3em 1em;
+      }
+      .button.button-primary.ic-btn {
+        background-color:white;
+        color:black;
+        border-radius:0px;
+        border:solid 1px black;
+        padding: .5em 2em;
+        margin-top:1.5em;
+        transition:all .2s;
+        font-family: 'Nunito Sans', sans-serif;
+      }
+
+      .button.button-primary.ic-btn:hover {
+        background-color:rgba(0,0,0,.05);
+        
+      }
+
     </style>
-   <div class="wrap">
-   <h1>RegistraTr Plugin</h1>
+
+   <div class="wrap ic_admin">
+   <h1><b>Invitation</b> code</h1><img width="120px" src="<?php echo plugin_dir_url (__FILE__) . '../includes/images/bibiailogo.svg' ?>" />
    <form action="<?php $_SERVER['REQUEST_URI'] ?>" method="post" id="registro">
-   
-    <table class="form-table">
+
+  <!-- tabs navigator -->
+
+    <script>
+      window.addEventListener("load", function() {
+
+        var tabs = document.querySelectorAll("ul.nav-tabs > li");
+
+        for (i = 0; i < tabs.length; i++) {
+          tabs[i].addEventListener("click", switchTab);
+        }
+        
+        function switchTab(event) {
+
+          event.preventDefault();
+          
+          document.querySelector("ul.nav-tabs li.active").classList.remove("active");
+          document.querySelector(".tab-pane.active").classList.remove("active");
+
+          var clickedTab = event.currentTarget;
+          var anchor = event.target; 
+          var activePaneID = anchor.getAttribute("href");
+
+          clickedTab.classList.add("active");
+          document.querySelector(activePaneID).classList.add("active");
+        }
+
+      });
+
+      window.addEventListener("load", function() {
+
+        var tabs = document.querySelectorAll("ul.nav-tabs-inner > li");
+
+        for (i = 0; i < tabs.length; i++) {
+          tabs[i].addEventListener("click", switchTab);
+        }
+
+        function switchTab(event) {
+
+          event.preventDefault();
+          
+          document.querySelector("ul.nav-tabs-inner li.active").classList.remove("active");
+          document.querySelector(".tab-inner-pane.active").classList.remove("active");
+
+          var clickedTab = event.currentTarget;
+          var anchor = event.target; 
+          var activePaneID = anchor.getAttribute("href");
+
+          clickedTab.classList.add("active");
+          document.querySelector(activePaneID).classList.add("active");
+        }
+
+        });
+
+
+    </script>
+
+    <ul class="nav-tabs">
+      <li class="active"><a href="#tab-avisos">Avisos</a></li>
+      <li><a href="#tab-redirecciones">Redirecciones</a></li>
+      <li><a href="#tab-ajustes">Ajustes</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <div id="tab-avisos" class="tab-pane active">
+        <!--"avisos" tab-->
+
+        <ul class="nav-tabs-inner">
+          <li class="active"><a href="#tab-anfitrion">Anfitrión</a></li>
+          <li><a href="#tab-espera">Invitado en espera</a></li>
+          <li><a href="#tab-aceptado">Invitado aceptado</a></li>
+        </ul>
+        <div class="tab-inner-content">
+          <div id="tab-anfitrion" class="tab-inner-pane active">
+            <div class="ad-form">
+            <div class="ad-form-icon"><i class='bx bx-info-circle info2'></i></div>
+            <div class="ad-form-text"><p>Este correo le llegará al anfitrión que ha compartido su código de invitación 
+              cuando un usuario se registra con dicho código. En este caso, es Necesario que 
+              el anfitrión apruebe la solicitud con el enlace de “Lista de espera” previamente creado.</p></div>
+            </div><br>
+            <label style="display:none;" for="email1">email para usuarios registrados</label>
+            <textarea id="message" placeholder="Email para anfitrion" rows = "10" cols = "50" type="textarea" form="registro" name="email1" class="regular-text"><?php echo $emailtxt1 ?></textarea>
+            <button id="btn">Append text</button>
+          </div>
+
+          <div id="tab-espera" class="tab-inner-pane">
+          <div class="ad-form">
+            <div class="ad-form-icon"><i class='bx bx-info-circle info2'></i></div>
+            <div class="ad-form-text"><p>El usuario que ha procedido con el registro recibirá este correo.</p></div>
+            </div><br>
+          <label style="display:none;" for="email2">email para nuevos usuarios</label>
+          <textarea placeholder="Email para invitado" rows = "10" cols = "50" type="textarea" name="email2"  class="regular-text"><?php echo $emailtxt2 ?></textarea>
+          </div>
+
+          <div id="tab-aceptado" class="tab-inner-pane">
+          <div class="ad-form">
+            <div class="ad-form-icon"><i class='bx bx-info-circle info2'></i></div>
+            <div class="ad-form-text"><p>Notifica al usuario registrado de que su cuenta ha sido aprobada por el
+              anfitrión que le ha invitado. </p></div>
+            </div><br>
+          <label style="display:none;" for="email3">email para usuarios confirmados</label>
+          <textarea placeholder="Email de aceptacion" rows = "10" cols = "50" type="textarea" name="email3"  class="regular-text"><?php echo $emailtxt3 ?></textarea>
+          </div>
+        </div>
+        <!--end of "avisos" tab-->
+      </div>
+
+      <div id="tab-redirecciones" class="tab-pane">
+        <div class="ic-redirec-block">
+        <label for="page1">Página de lista de espera</label><br>
+        <input type="text" placeholder="url de lista de usuarios pendientes" name="page1"  class="regular-text" value="<?php echo $page1val ?>">
+        </div>
+
+        <div class="ic-redirec-block">
+        <label for="page2">Redirección de usuarios no aceptados</label><br>
+        <input type="text" placeholder="Redirecion a usuarios pendientes" name="page2"  class="regular-text" value="<?php echo $page2val ?>">
+        </div>
+      </div>
+
+      <div id="tab-ajustes" class="tab-pane">
+      <div class="ic-redirec-block">
+        <label for="correo">Correo emisor</label><br>
+        <input type="text" placeholder="Correo de envios de notificaciones" name="correo"  class="regular-text" value="<?php echo $correo ?>">
+      </div></div>
+    </div>
+
+  <!-- end of tabs navigator -->
+    <!--table class="form-table">
     <tbody>
         <tr>
         <th scope="row"><label for="email1">email para usuarios registrados</label></th>
@@ -189,8 +500,8 @@ function registratr_config_page($page){
         </tr>
         
     </tbody>
-    </table>
-    <p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="Guardar cambios"></p>
+    </table-->
+    <p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary ic-btn" value="Guardar cambios"></p>
     
     </form></div>  
     </html>
