@@ -8,3 +8,9 @@ Comandos añadidios
 [registratr_users] Para mostrar lista de usuarios pendientes.
 
 Plugin 100% funcional
+
+ChangeLog:
+
+V2.0.1 Añadido DNI a los usuarios y soporte HTML y CSS en los correos para usuarios. necesario para el registro
+
+V2.1.0 LTS Reparados los paths en los includes para compatibilidad. Version LTS
